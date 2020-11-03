@@ -15,34 +15,96 @@
 #include "Lights.h"
 //#######################
 
-					//    Separación	    Coordenas random
+///////////////////////////// RELOJ CLASS /////////////////////////////////////////////////
+class Reloj {
+private:
+	time_t timeI, timeF;
+	bool asignar;
+public:
+	Reloj();
+	void Iniciar_Conteo();
+	bool Conteo(int);
+	float Aumentar_PorSegundo();
+};
+
+Reloj::Reloj() {
+	timeI = time(0);
+	timeF = time(0);
+	asignar = false;
+}
+
+void Reloj::Iniciar_Conteo() {
+	if (!asignar) {
+		timeI = time(0);
+		asignar = true;
+	}
+}
+
+bool Reloj::Conteo(int _segundos) {
+	timeF = time(0);
+	int s = timeF - timeI;
+	if (s >= _segundos) {
+		asignar = false;
+		return true;
+	}
+	return false;
+}
+
+					//    Separaciï¿½n	    Coordenas random
 Planet planets[1];  //    con el sol	 sobre la circunferencia    
 Asteroid* asteroids[10];
 Lights* lightConfig;
 
 float asteroidRing = 12;
-float posInicial[8][3] = { {14.0,			0.0,		0.0},
-							{21.0,			0.0,		0.0},
-							{30.0,			0.0,		0.0},
-							{39.0,			0.0,		0.0},
-							{48.0,			0.0,		0.0},
-							{59.0,			0.0,		0.0},
-							{70.0,			0.0,		0.0},
-							{80.0,			0.0,		0.0} };
+float posFinal[8][3] = { {08.0,			0.0,		0.0},
+							{11.0,			0.0,		0.0},
+							{15.0,			0.0,		0.0},
+							{19.0,			0.0,		0.0},
+							{24.0,			0.0,		0.0},
+							{31.0,			0.0,		0.0},
+							{35.0,			0.0,		0.0},
+							{39.0,			0.0,		0.0} };
 
 static bool doAuto = false;
 static bool seeOrbits = false;
 Cubemap universe(5);
 Sphere sun(5.0);
+
+float angulo = 0;
+float angulos[8];
+
+float deltaT;
+bool planetaActual = false;
+int actual = 0;
+int zoom = 1;
+
+bool pressLeft, pressRight;
+enum class ANIMATION { Init, InicialPos, Idle };
+ANIMATION anim;
+Reloj timer;
+float t;
+
+float eyex = 0, eyey = 0, pY = 0, pX = 0;
+Cubemap universe(5);
+Sphere sun(5.0);
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
+
+void Rotar() {
+	for (int planeta = 0; planeta < 8; planeta++) {
+		angulos[planeta] -= planets[planeta].GetYearInc() * deltaT;
+		posFinal[planeta][1] = cos(angulos[planeta]) * posFinal[planeta][0];
+		posFinal[planeta][2] = sin(angulos[planeta]) * posFinal[planeta][0];
+	}
+}
 
 //Asignar coordenadas random dentro de sus orbitas
 void reColocar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
 		float angulo = 1 + rand() % 360;
-		posInicial[planeta][1] = cos(angulo) * posInicial[planeta][0];
-		posInicial[planeta][2] = sin(angulo) * posInicial[planeta][0];
+		angulos[planeta] = angulo;
+		posFinal[planeta][1] = cos(angulo) * posFinal[planeta][0];
+		posFinal[planeta][2] = sin(angulo) * posFinal[planeta][0];
 	}
 }
 
@@ -103,11 +165,14 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 
-		//universe.Draw();
+	glRotated(eyex, 0.0, 1.0, 0.0);
+	glRotated(eyey, 1.0, 0.0, 0.0);
+	glScaled(zoom, zoom, zoom);
 
-		glRotated(22.0, 0.0, 0.0, 1.0);
-		//glColor3f(1.0, 1.0, 0.0);
+	universe.Draw();
 
+	// glRotated(22.0, 0.0, 0.0, 1.0);
+	
 		glPushMatrix();
 			glMaterialfv(GL_FRONT, GL_EMISSION, lightEmission);
 			//glutSolidSphere(0.9, 15, 15);
@@ -115,10 +180,57 @@ void display(void)
 			glMaterialfv(GL_FRONT, GL_EMISSION, black);
 		glPopMatrix();
 
+	switch (anim)
+	{
+	case ANIMATION::Init:
+		timer.Iniciar_Conteo();
+		if (timer.Conteo(3)) {
+			anim = ANIMATION::InicialPos;
+			t = 0.0;
+		}
+		break;
+
+	case ANIMATION::InicialPos:
+		float posInicial[8][3];
+		if (t < 1.0) {
+			t += (1.0 * deltaT);
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 3; j++) {
+					posInicial[i][j] = 0.0 + posFinal[i][j] * t;
+				}
+				planets[i].DrawPlanet(posInicial[i][0], posInicial[i][1], posInicial[i][2]);
+			}
+
+		}
+		else
+			anim = ANIMATION::Idle;
+		break;
+
+	case ANIMATION::Idle:
+		glPushMatrix();
+
+		if (planetaActual)
+		{
+			glScaled(zoom, zoom, zoom);
+			glTranslatef(-posFinal[actual][1], 0.0, -posFinal[actual][2]);
+		}
+		else {
+			glTranslatef(0.0, 0.0, 0.0);
+		}
+
 		for (int i = 0; i < 8; i++)
 			planets[i].DrawPlanet(posInicial[i][0], posInicial[i][1], posInicial[i][2]);
 		for (int i = 0; i < 10; i++)
 			asteroids[i]->Draw();
+
+		if (doAuto)
+			Rotar();
+
+		glPopMatrix();
+
+		break;
+	}
+
 
 	glPopMatrix();
 
@@ -166,12 +278,52 @@ void keyboard(unsigned char key, int x, int y)
 			seeOrbits = true;
 		planets->SeeOrbits(seeOrbits);
 		break;
-	case 0x1B:
-	case 'q':
+
 	case 'Q':
-		exit(0);
+	case 'q':
+		if (zoom > 1)
+			zoom -= 1;
 		break;
-	default:
+	case 'e':
+	case 'E':
+		zoom += 1;
+		break;
+
+	case '1':
+		actual = 0;
+		planetaActual = true;
+		break;
+	case '2':
+		actual = 1;
+		planetaActual = true;
+		break;
+	case '3':
+		actual = 2;
+		planetaActual = true;
+		break;
+	case '4':
+		actual = 3;
+		planetaActual = true;
+		break;
+	case '5':
+		actual = 4;
+		planetaActual = true;
+		break;
+	case '6':
+		actual = 5;
+		planetaActual = true;
+		break;
+	case '7':
+		actual = 6;
+		planetaActual = true;
+		break;
+	case '8':
+		actual = 7;
+		planetaActual = true;
+		break;
+	case '0':
+		zoom = 1;
+		planetaActual = false;
 		break;
 	}
 }
@@ -180,20 +332,46 @@ void mouse(int btn, int state, int x, int y)
 {
 	if (state == GLUT_DOWN)
 	{
+		pressLeft = false;
+		pressRight = false;
+
 		// Make the year move faster
 		if (btn == GLUT_LEFT_BUTTON)
-			for (int i = 0; i < 8; i++)
-				planets[i].ChangeInc(0.02);
+			pressLeft = true;
+			/*for (int i = 0; i < 8; i++)
+				planets[i].ChangeInc(0.02);*/
 
 
 		// Make the day move faster
 		else if (btn == GLUT_RIGHT_BUTTON)
-			for (int i = 0; i < 8; i++)
-				planets[i].ChangeInc(-0.02);
+			pressRight = true;
+			/*for (int i = 0; i < 8; i++)
+				planets[i].ChangeInc(-0.02);*/
 
 
 		glutPostRedisplay();
 	}
+}
+
+void mouse_motion(int x, int y) {
+	if (pressLeft) {
+		if (y > pY)
+			eyey += 0.5;
+		else if (y < pY)
+			eyey -= 0.5;
+		glutPostRedisplay();
+	}
+
+	if (pressRight) {
+		if (x > pX)
+			eyex += 0.5;
+		else if (x < pX)
+			eyex -= 0.5;
+		glutPostRedisplay();
+	}
+
+	pX = x;
+	pY = y;
 }
 
 int main(int argc, char** argv)
@@ -201,12 +379,17 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 
 	glutInit(&argc, argv);
+	//glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	//glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
+	//glutInitWindowPosition(0, 0);
+
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(1280, 720);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("3D Astrology Project");
+	glutCreateWindow("3D Astrology");
 	init();
 
+	glutMotionFunc(mouse_motion);
 	glutMouseFunc(mouse);
 	glutKeyboardFunc(keyboard);
 	glutDisplayFunc(display);

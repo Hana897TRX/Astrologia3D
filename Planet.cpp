@@ -89,7 +89,6 @@ void Planet::DrawPlanet(float space, float x, float z) {
 	if (seeOrbits)
 		glutWireTorus(space, 0.0, 40, 1);
 	//Rotate on the sun
-	glRotatef((GLfloat)year, 0.0, 1.0, 0.0);
 	glTranslated(x, 0.0, z);
 
 	for (int i = 0; i < moonCount; i++) {
@@ -119,7 +118,6 @@ void Planet::DrawPlanet(float space, float x, float z) {
 	moons->SeeOrbits(seeOrbits);
 
 	if (doAuto) {
-		year = (GLfloat)(((GLint)(year * 100.f + yearInc * 100.f)) % 36000) / 100.0f;
 		day = (GLfloat)(((GLint)(day * 100.f + dayInc * 100.f)) % 36000) / 100.0f;
 	}
 }
@@ -148,4 +146,8 @@ void Planet::SeeOrbits(bool _seeOrbits) {
 	seeOrbits = _seeOrbits;
 }
 bool Planet::seeOrbits = false;
+
+float Planet::GetYearInc() {
+	return yearInc;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////

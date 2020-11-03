@@ -35,6 +35,7 @@ public:
 	Planet(int, int, float, float, float);
 	void DrawPlanet(float, float, float);
 	void ChangeInc(float);
+	float GetYearInc();
 	void SetTexture(char*);
 	void Axes();
 	static void DoAuto(bool);
