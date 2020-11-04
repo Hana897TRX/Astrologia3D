@@ -55,8 +55,8 @@ Planet planets[1];  //    con el sol	 sobre la circunferencia
 Asteroid* asteroids[10];
 Lights* lightConfig;
 
-float asteroidRing = 12;
-float posFinal[8][3] = { {08.0,			0.0,		0.0},
+float asteroidRing = 12;//					 X           Z
+float posFinal[8][3] = {    {08.0,			0.0,		0.0},
 							{11.0,			0.0,		0.0},
 							{15.0,			0.0,		0.0},
 							{19.0,			0.0,		0.0},
@@ -85,8 +85,6 @@ Reloj timer;
 float t;
 
 float eyex = 0, eyey = 0, pY = 0, pX = 0;
-Cubemap universe(5);
-Sphere sun(5.0);
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
 
@@ -148,6 +146,11 @@ void init(void)
 	planets[7].SetTexture((char*) "res/neptune.bmp");
 
 	cout << glGetString(GL_VERSION) << " |*This project was encoded over OpenGL 4.6.0*| ";
+
+	//######################## ANIMATION ########################
+	timer = Reloj();
+	anim = ANIMATION::Init;
+	deltaT = 0.005;
 
 	reColocar();
 
@@ -219,7 +222,7 @@ void display(void)
 		}
 
 		for (int i = 0; i < 8; i++)
-			planets[i].DrawPlanet(posInicial[i][0], posInicial[i][1], posInicial[i][2]);
+			planets[i].DrawPlanet(posFinal[i][0], posFinal[i][1], posFinal[i][2]);
 		for (int i = 0; i < 10; i++)
 			asteroids[i]->Draw();
 
@@ -242,7 +245,7 @@ void reshape(int w, int h)
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 1080.0);
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 2160.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
