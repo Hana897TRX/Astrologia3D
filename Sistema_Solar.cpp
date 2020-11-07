@@ -13,42 +13,8 @@
 #include "RGBpixmap.h"
 #include "Asteroid.h"
 #include "Lights.h"
+#include "Reloj.h"
 //#######################
-
-///////////////////////////// RELOJ CLASS /////////////////////////////////////////////////
-class Reloj {
-private:
-	time_t timeI, timeF;
-	bool asignar;
-public:
-	Reloj();
-	void Iniciar_Conteo();
-	bool Conteo(int);
-	float Aumentar_PorSegundo();
-};
-
-Reloj::Reloj() {
-	timeI = time(0);
-	timeF = time(0);
-	asignar = false;
-}
-
-void Reloj::Iniciar_Conteo() {
-	if (!asignar) {
-		timeI = time(0);
-		asignar = true;
-	}
-}
-
-bool Reloj::Conteo(int _segundos) {
-	timeF = time(0);
-	int s = timeF - timeI;
-	if (s >= _segundos) {
-		asignar = false;
-		return true;
-	}
-	return false;
-}
 
 					//    Separaci�n	    Coordenas random
 Planet planets[1];  //    con el sol	 sobre la circunferencia    
@@ -145,7 +111,7 @@ void init(void)
 	planets[7] = Planet(1, 0, 0.8, 0.02f, 0.11f);
 	planets[7].SetTexture((char*) "res/neptune.bmp");
 
-	cout << glGetString(GL_VERSION) << " |*This project was encoded over OpenGL 4.6.0*| ";
+	cout << glGetString(GL_VERSION) << " |* This project was encoded over OpenGL 4.6.0 *| ";
 
 	//######################## ANIMATION ########################
 	timer = Reloj();
@@ -173,12 +139,9 @@ void display(void)
 	glScaled(zoom, zoom, zoom);
 
 	universe.Draw();
-
-	// glRotated(22.0, 0.0, 0.0, 1.0);
 	
 		glPushMatrix();
 			glMaterialfv(GL_FRONT, GL_EMISSION, lightEmission);
-			//glutSolidSphere(0.9, 15, 15);
 			sun.HaSolidSphere();
 			glMaterialfv(GL_FRONT, GL_EMISSION, black);
 		glPopMatrix();
@@ -236,7 +199,6 @@ void display(void)
 
 
 	glPopMatrix();
-
 	glutSwapBuffers();
 }
 

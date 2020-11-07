@@ -44,10 +44,10 @@ void Sphere::SetSpeedAndTranslation(float _speed, float t0, float t1, float t2) 
 
 void Sphere::LogicSphere() {
 	for (int i = 0; i < slices + 1; i++) {
-		float lon = Map(i, 0, slices, -PI, PI);
+		float lon = Map(i, 0, slices, - PI, 0);
 
 		for (int j = 0; j < stacks + 1; j++) {
-			float lat = Map(j, 0, stacks, -PI / 2, PI / 2);
+			float lat = Map(j, 0, stacks, -2 * PI, 0);
 			float x = radius * sin(lon) * cos(lat);
 			float y = radius * sin(lon) * sin(lat);
 			float z = radius * cos(lon);
@@ -119,6 +119,7 @@ void Sphere::HaSolidSphere() {
 					glNormal3fv(points[i][j]);
 					glVertex3fv(points[i][j]);
 			}
+
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
