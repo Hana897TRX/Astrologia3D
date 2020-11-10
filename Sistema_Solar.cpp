@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-//#######################
+//####################### - HOLA -
 #include "Sphere.h"
 #include "Planet.h"
 #include "Moon.h"
@@ -16,7 +16,7 @@
 #include "Reloj.h"
 //#######################
 
-					//    Separaci�n	    Coordenas random
+					//    Separación	    Coordenas random
 Planet planets[1];  //    con el sol	 sobre la circunferencia    
 Asteroid* asteroids[10];
 Lights* lightConfig;
@@ -344,10 +344,6 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 
 	glutInit(&argc, argv);
-	//glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	//glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
-	//glutInitWindowPosition(0, 0);
-
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(1280, 720);
 	glutInitWindowPosition(100, 100);
