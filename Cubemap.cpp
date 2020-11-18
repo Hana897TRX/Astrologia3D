@@ -12,34 +12,108 @@ using namespace std;
 #include "RGBpixmap.h"
 //#####################
 
-Cubemap::Cubemap(float _size) {
+Cubemap::Cubemap(float _size, char* bot0, char* bot1, char* mid, char* left, char* right, char* top) {
 	size = _size;
-	glGenTextures(1, &name);
-}
+	glGenTextures(6, corex);
 
-void Cubemap::SetTexture(char* fname) {
-	myText[0].readBMPFile(fname);
-	myText[0].SetTexture(name);
+	text[0].readBMPFile(bot0);
+	text[0].SetTexture(corex[0]);
+
+	text[1].readBMPFile(bot1);
+	text[1].SetTexture(corex[1]);
+
+	text[2].readBMPFile(mid);
+	text[2].SetTexture(corex[2]);
+
+	text[3].readBMPFile(left);
+	text[3].SetTexture(corex[3]);
+
+	text[4].readBMPFile(right);
+	text[4].SetTexture(corex[4]);
+
+	text[5].readBMPFile(top);
+	text[5].SetTexture(corex[5]);
 }
 
 void Cubemap::Draw() {
+	glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
-	glRotated(-35, 1.0, 0.0, 0.0);
-		glBindTexture(GL_TEXTURE_2D, name);
-		glEnable(GL_TEXTURE_2D);
-		glBegin(GL_QUADS);
+	glTranslated(-200.0, -150.0, -250.0);
 
-			glColor3f(1.0, 1.0, 1.0);
-		glTexCoord2f(0.0, 0.0);
-			glVertex3f(-750,	-250,	-450);
-		glTexCoord2f(1.0, 0.0);
-			glVertex3f(750,		-250,	-450);
-		glTexCoord2f(1.0, 1.0);
-			glVertex3f(750,		 520,	-450);
-		glTexCoord2f(0.0, 1.0);
-			glVertex3f(-750,	 520,	-450);
+	glBindTexture(GL_TEXTURE_2D, corex[0]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(0,		0,		0);
+		glTexCoord2f(0, 1);
+			glVertex3f(size,	0,		0);
+		glTexCoord2f(1, 1);
+			glVertex3f(size,	0,	 size);
+		glTexCoord2f(1, 0);
+			glVertex3f(0,		0,	 size);
+	glEnd();
 
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, corex[4]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(0,		0,		0);
+		glTexCoord2f(0, 1);
+			glVertex3f(0,		0,	 size);
+		glTexCoord2f(1, 1);
+			glVertex3f(0,	 size,	 size);
+		glTexCoord2f(1, 0);
+			glVertex3f(0,	 size,		0);
+	glEnd();
+
+
+	glBindTexture(GL_TEXTURE_2D, corex[2]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(size,    0,		0);
+		glTexCoord2f(0, 1);
+			glVertex3f(0,       0,		0);
+		glTexCoord2f(1, 1);
+			glVertex3f(0,    size,		0);
+		glTexCoord2f(1, 0);
+			glVertex3f(size, size,		0);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, corex[3]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(size,    0,      0);
+		glTexCoord2f(0, 1);
+			glVertex3f(size,    0,	 size);
+		glTexCoord2f(1, 1);
+			glVertex3f(size, size,	 size);
+		glTexCoord2f(1, 0);
+			glVertex3f(size, size,		0);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, corex[1]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(size,    0,	 size);
+		glTexCoord2f(0, 1);
+			glVertex3f(0,       0,	 size);
+		glTexCoord2f(1, 1);
+			glVertex3f(0,    size,	 size);
+		glTexCoord2f(1, 0);
+			glVertex3f(size, size,	 size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, corex[5]);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0, 0);
+			glVertex3f(0,    size,		0);
+		glTexCoord2f(0, 1);
+			glVertex3f(size, size,		0);
+		glTexCoord2f(1, 1);
+			glVertex3f(size, size,	 size);
+		glTexCoord2f(1, 0);
+			glVertex3f(0,    size,	 size);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }

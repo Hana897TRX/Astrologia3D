@@ -4,7 +4,7 @@
 #include <time.h>
 #include <math.h>
 
-//####################### - HOLA -
+//#######################
 #include "Sphere.h"
 #include "Planet.h"
 #include "Moon.h"
@@ -33,8 +33,7 @@ float posFinal[8][3] = {    {08.0,			0.0,		0.0},
 
 static bool doAuto = false;
 static bool seeOrbits = false;
-Cubemap universe(5);
-Sphere sun(5.0);
+Planet sun(0, 0.0, 5, 0.0, 0.0);
 
 float angulo = 0;
 float angulos[8];
@@ -43,6 +42,7 @@ float deltaT;
 bool planetaActual = false;
 int actual = 0;
 int zoom = 1;
+float rotation = 0.0;
 
 bool pressLeft, pressRight;
 enum class ANIMATION { Init, InicialPos, Idle };
@@ -54,6 +54,12 @@ float eyex = 0, eyey = 0, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
 
+//################
+
+Cubemap* map;
+
+//###############
+
 void Rotar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
 		angulos[planeta] -= planets[planeta].GetYearInc() * deltaT;
@@ -62,8 +68,8 @@ void Rotar() {
 	}
 }
 
-//Asignar coordenadas random dentro de sus orbitas
 void reColocar() {
+	//Asignar coordenadas random dentro de sus orbitas
 	for (int planeta = 0; planeta < 8; planeta++) {
 		float angulo = 1 + rand() % 360;
 		angulos[planeta] = angulo;
@@ -81,11 +87,11 @@ void init(void)
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
-	//##################### MAIN PLANETS ###############################
+
+	//##################### LOAD TEXTURES ###############################
 
 	Moon::SetTexture((char*)"res/moon.bmp");
 	sun.SetTexture((char*) "res/sun.bmp");
-	//universe.SetTexture((char*)"res/universe.bmp");
 
 	planets[0] = Planet(0, 0, 0.6, 0.15f, 0.25f);
 	planets[0].SetTexture((char*) "res/mercury.bmp");
@@ -123,6 +129,10 @@ void init(void)
 	//################## ASTEROIDS ##################
 	Asteroid::SetTexture((char*)"res/asteroid.bmp");
 
+	map = new Cubemap(400, (char*)"res/bot0.bmp", (char*)"res/bot1.bmp",
+		(char*)"res/mid.bmp", (char*)"res/left.bmp",
+		(char*)"res/right.bmp", (char*)"res/top.bmp");
+
 	for (int i = 0; i < 10; i++) {
 		float angulo = 1 + rand() % 360;
 		asteroids[i] = new Asteroid(asteroidRing, cos(angulo) * asteroidRing, sin(angulo) * asteroidRing);
@@ -132,17 +142,18 @@ void init(void)
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glPushMatrix();
+		glRotated(rotation, 0.0, 1.0, 0.0);
 
-	glRotated(eyex, 0.0, 1.0, 0.0);
-	glRotated(eyey, 1.0, 0.0, 0.0);
-	glScaled(zoom, zoom, zoom);
-
-	universe.Draw();
+		glRotated(eyex, 0.0, 1.0, 0.0);
+		glRotated(eyey, 1.0, 0.0, 0.0);
+		map->Draw();
+		glScaled(zoom, zoom, zoom);
 	
 		glPushMatrix();
 			glMaterialfv(GL_FRONT, GL_EMISSION, lightEmission);
-			sun.HaSolidSphere();
+			sun.DrawPlanet(0,0,0);
 			glMaterialfv(GL_FRONT, GL_EMISSION, black);
 		glPopMatrix();
 
@@ -197,7 +208,6 @@ void display(void)
 		break;
 	}
 
-
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -218,6 +228,12 @@ void reshape(int w, int h)
 void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
+	case 'l':
+		rotation++;
+		break;
+	case 'L':
+		rotation--;
+		break;
 	case 'a':
 	case 'A':
 		// Toggle automatic movement of planet

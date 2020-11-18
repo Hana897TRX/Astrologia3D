@@ -62,7 +62,7 @@ void Sphere::LogicSphere() {
 }
 
 void Sphere::DoRotation() {
-	glRotated(90, 0.0, 1.0, 1.0);
+	glRotated(-75, 0.5, 0.0, 0.45);
 	year += speed / 360;
 	if (year >= 360)
 		year -= 360;
@@ -75,53 +75,53 @@ void Sphere::HaSolidSphere() {
 	}
 	else {
 		glPushMatrix();
-		DoRotation();
-		glTranslated(translate[0], translate[1], translate[2]);
+			DoRotation();
+			glTranslated(translate[0], translate[1], translate[2]);
 
-		if (texture == 1) {
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, name);
-		}
-		else if (texture == 2) {
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, *paramName);
-		}
-
-		glBegin(GL_TRIANGLES);
-		for (int i = 0; i < slices; i++)
-			for (int j = 0; j < stacks; j++) {
-
-					glColor3f(1.0, 1.0, 1.0);
-
-				glTexCoord2f((float)i / (float)slices, (float)j / (float)stacks);
-					glNormal3fv(points[i][j]);
-					glVertex3fv(points[i][j]);
-
-				glTexCoord2f((float)(i + 1) / (float)slices, (float)j / (float)stacks);
-					glNormal3fv(points[i + 1][j]);
-					glVertex3fv(points[i + 1][j]);
-
-				glTexCoord2f((float)(i + 1) / (float)slices, (float)(j + 1) / (float)stacks);
-					glNormal3fv(points[i + 1][j + 1]);
-					glVertex3fv(points[i + 1][j + 1]);
-					
-					glColor3f(0.5, 0.5, 0.5);
-
-				glTexCoord2f((float)(i + 1) / (float)slices, (float)(j + 1) / (float)stacks);
-					glNormal3fv(points[i + 1][j + 1]);
-					glVertex3fv(points[i + 1][j + 1]);
-
-				glTexCoord2f((float)(i) / (float)slices, (float)(j + 1) / (float)stacks);
-					glNormal3fv(points[i][j + 1]);
-					glVertex3fv(points[i][j + 1]);
-
-				glTexCoord2f((float)(i) / (float)slices, (float)(j) / (float)stacks);
-					glNormal3fv(points[i][j]);
-					glVertex3fv(points[i][j]);
+			if (texture == 1) {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, name);
+			}
+			else if (texture == 2) {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, *paramName);
 			}
 
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+			glBegin(GL_TRIANGLES);
+			for (int i = 0; i < slices; i++)
+				for (int j = 0; j < stacks; j++) {
+
+						glColor3f(1.0, 1.0, 1.0);
+
+					glTexCoord2f((float)i / (float)slices, (float)j / (float)stacks);
+						glNormal3fv(points[i][j]);
+						glVertex3fv(points[i][j]);
+
+					glTexCoord2f((float)(i + 1) / (float)slices, (float)j / (float)stacks);
+						glNormal3fv(points[i + 1][j]);
+						glVertex3fv(points[i + 1][j]);
+
+					glTexCoord2f((float)(i + 1) / (float)slices, (float)(j + 1) / (float)stacks);
+						glNormal3fv(points[i + 1][j + 1]);
+						glVertex3fv(points[i + 1][j + 1]);
+					
+						glColor3f(0.5, 0.5, 0.5);
+
+					glTexCoord2f((float)(i + 1) / (float)slices, (float)(j + 1) / (float)stacks);
+						glNormal3fv(points[i + 1][j + 1]);
+						glVertex3fv(points[i + 1][j + 1]);
+
+					glTexCoord2f((float)(i) / (float)slices, (float)(j + 1) / (float)stacks);
+						glNormal3fv(points[i][j + 1]);
+						glVertex3fv(points[i][j + 1]);
+
+					glTexCoord2f((float)(i) / (float)slices, (float)(j) / (float)stacks);
+						glNormal3fv(points[i][j]);
+						glVertex3fv(points[i][j]);
+				}
+			glEnd();
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
 	}
 }
