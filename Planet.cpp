@@ -86,8 +86,12 @@ void Planet::SetTexture(char* fname) {
 void Planet::DrawPlanet(float space, float x, float z) {
 
 	glPushMatrix();
-	if (seeOrbits)
+	if (seeOrbits) {
+		glDisable(GL_LIGHTING);
+		glColor3f(1.0, 1.0, 1.0);
 		glutWireTorus(space, 0.0, 40, 1);
+		glEnable(GL_LIGHTING);
+	}
 	//Rotate on the sun
 	glTranslated(x, 0.0, z);
 

@@ -10,7 +10,7 @@
 #include "Elliptica.h"
 //##########################
 
-void Thingy(int divisiones, int divisiones2, float scale, float r, float R, float cr, float cg, float cb) {
+void Elliptica::Thingy(int divisiones, int divisiones2, float scale, float r, float R, float cr, float cg, float cb) {
 	int divInt = divisiones * divisiones2;
 	float wholeCircleAng = 2 * PI;
 	float anglePerDiv = wholeCircleAng / divisiones;
@@ -18,11 +18,11 @@ void Thingy(int divisiones, int divisiones2, float scale, float r, float R, floa
 	// Draw torus'
 	glPushMatrix();
 		glColor3f(cr, cg, cb);
-		glRotated(30.0, 0.0, 1.0, 0.0);
-		glRotated(-5.0, 0.0, 0.0, 1.0);
-		glRotated(-5.0, 1.0, 0.0, 0.0);
-		glTranslated(0.4, 0.0, 0.0);
-		//glScaled(3.0, 3.0, 3.0);
+		//glScaled(20.0, 20.0, 20.0);
+		//glRotated(30.0, 0.0, 1.0, 0.0);
+		//glRotated(-5.0, 0.0, 0.0, 1.0);
+		//glRotated(-5.0, 1.0, 0.0, 0.0);
+		//glTranslated(0.0, -0.5, 0.0);
 		glutSolidTorus(r, R, 100, 100);
 
 		//Divisions

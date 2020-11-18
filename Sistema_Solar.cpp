@@ -14,6 +14,7 @@
 #include "Asteroid.h"
 #include "Lights.h"
 #include "Reloj.h"
+#include "Elliptica.h"
 //#######################
 
 					//    Separación	    Coordenas random
@@ -50,9 +51,14 @@ ANIMATION anim;
 Reloj timer;
 float t;
 
-float eyex = 0, eyey = 0, pY = 0, pX = 0;
+float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
+
+int estrellas = 1000;
+float** estrellasPos;
+
+float r = 0.45, R = 3.0, divisiones = 12.0, divisiones2 = divisiones * 3;
 
 void Rotar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
@@ -69,6 +75,36 @@ void reColocar() {
 		angulos[planeta] = angulo;
 		posFinal[planeta][1] = cos(angulo) * posFinal[planeta][0];
 		posFinal[planeta][2] = sin(angulo) * posFinal[planeta][0];
+	}
+}
+
+void colocarEstrellas() {
+	estrellasPos = new float* [estrellas];
+	for (int i = 0; i < estrellas; i++) {
+		estrellasPos[i] = new float[3];
+		float randX = -114 + rand() % 228;
+		float randY = -105 + rand() % 210;
+		float randZ = -250 + rand() % 500;
+
+		estrellasPos[i][0] = randX;
+		estrellasPos[i][1] = randY;
+		estrellasPos[i][2] = randZ;
+	}
+}
+
+void dibujarEstrellas() {
+	for (int i = 0; i < estrellas; i++) {
+		glPushMatrix();
+
+		glDisable(GL_LIGHTING);
+		glColor3f(1.0, 1.0, 1.0);
+		glTranslated(
+			estrellasPos[i][0],
+			estrellasPos[i][1],
+			estrellasPos[i][2]);
+		glutSolidSphere(0.25, 10, 10);
+		glEnable(GL_LIGHTING);
+		glPopMatrix();
 	}
 }
 
@@ -127,24 +163,43 @@ void init(void)
 		float angulo = 1 + rand() % 360;
 		asteroids[i] = new Asteroid(asteroidRing, cos(angulo) * asteroidRing, sin(angulo) * asteroidRing);
 	}
+
+	colocarEstrellas();
 }
+
+Elliptica elip[2];
 
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 
-	glRotated(eyex, 0.0, 1.0, 0.0);
-	glRotated(eyey, 1.0, 0.0, 0.0);
+	dibujarEstrellas();
+
 	glScaled(zoom, zoom, zoom);
 
-	universe.Draw();
+	if (planetaActual) {
+		glPushMatrix();
+		glDisable(GL_LIGHTING);
+		glScaled(3, 3, 3);
+		elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8);
+		elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9);
+		glEnable(GL_LIGHTING);
+		glPopMatrix();
+	}
+
+	glRotated(eyex, 0.0, 1.0, 0.0);
+	glRotated(eyey, 1.0, 0.0, 0.0);
+
+	//universe.Draw();
 	
+	if (!planetaActual) {
 		glPushMatrix();
 			glMaterialfv(GL_FRONT, GL_EMISSION, lightEmission);
-			sun.HaSolidSphere();
+				sun.HaSolidSphere();
 			glMaterialfv(GL_FRONT, GL_EMISSION, black);
 		glPopMatrix();
+	}
 
 	switch (anim)
 	{
@@ -211,7 +266,8 @@ void reshape(int w, int h)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.0, 35.0, 105.0, 0.0, -9.0, 0.0, 0.0, 1.0, 1.0);
+	//gluLookAt(0.0, 35.0, 105.0, 0.0, -9.0, 0.0, 0.0, 1.0, 1.0);
+	gluLookAt(0.0, 0.0, 105.0, 0.0, -9.0, 0.0, 0.0, 1.0, 1.0);
 	//gluLookAt(0.0, 5.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0);
 }
 
@@ -256,14 +312,17 @@ void keyboard(unsigned char key, int x, int y)
 
 	case '1':
 		actual = 0;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '2':
 		actual = 1;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '3':
 		actual = 2;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '4':
@@ -272,18 +331,22 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case '5':
 		actual = 4;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '6':
 		actual = 5;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '7':
 		actual = 6;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '8':
 		actual = 7;
+		zoom = 5;
 		planetaActual = true;
 		break;
 	case '0':
@@ -321,17 +384,17 @@ void mouse(int btn, int state, int x, int y)
 void mouse_motion(int x, int y) {
 	if (pressLeft) {
 		if (y > pY)
-			eyey += 0.5;
+			eyey += 1.0;
 		else if (y < pY)
-			eyey -= 0.5;
+			eyey -= 1.0;
 		glutPostRedisplay();
 	}
 
 	if (pressRight) {
 		if (x > pX)
-			eyex += 0.5;
+			eyex += 1.0;
 		else if (x < pX)
-			eyex -= 0.5;
+			eyex -= 1.0;
 		glutPostRedisplay();
 	}
 
