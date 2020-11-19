@@ -76,6 +76,7 @@ void Sphere::HaSolidSphere() {
 	else {
 		glPushMatrix();
 		DoRotation();
+
 		glTranslated(translate[0], translate[1], translate[2]);
 
 		if (texture == 1) {

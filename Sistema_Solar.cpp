@@ -19,7 +19,7 @@
 
 					//    Separación	    Coordenas random
 Planet planets[1];  //    con el sol	 sobre la circunferencia    
-Asteroid* asteroids[10];
+//Asteroid* asteroids[10];
 Lights* lightConfig;
 
 float asteroidRing = 12;//					 X           Z
@@ -60,7 +60,7 @@ float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
 
-int estrellas = 1000;
+int estrellas = 250;
 float** estrellasPos;
 
 float r = 0.45, R = 3.0, divisiones = 12.0, divisiones2 = divisiones * 3;
@@ -118,7 +118,7 @@ void init(void)
 	//################## LIGHTS #####################
 	lightConfig = new Lights(0.0, 0.0, 0.0, 0.901, 0.513, 0.078);
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.1, 0.1, 0.1, 1.0);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
@@ -165,12 +165,12 @@ void init(void)
 	reColocar();
 
 	//################## ASTEROIDS ##################
-	Asteroid::SetTexture((char*)"res/asteroid.bmp");
+	/*Asteroid::SetTexture((char*)"res/asteroid.bmp");
 
 	for (int i = 0; i < 10; i++) {
 		float angulo = 1 + rand() % 360;
 		asteroids[i] = new Asteroid(asteroidRing, cos(angulo) * asteroidRing, sin(angulo) * asteroidRing);
-	}
+	}*/
 
 	colocarEstrellas();
 }
@@ -189,17 +189,16 @@ void display(void)
 	if (planetaActual) {
 		glPushMatrix();
 		glDisable(GL_LIGHTING);
-		glScaled(3, 3, 3);
-		elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8);
-		elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9);
-		glEnable(GL_LIGHTING);
+			glTranslated(-30.0, 0.0, 0.0);
+			glScaled(10, 10, 10);
+			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8);
+			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9);
+			glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
 
 	glRotated(eyex, 0.0, 1.0, 0.0);
 	glRotated(eyey, 1.0, 0.0, 0.0);
-
-	//universe.Draw();
 	
 	if (!planetaActual) {
 		glPushMatrix();
@@ -247,10 +246,12 @@ void display(void)
 			glTranslatef(0.0, 0.0, 0.0);
 		}
 
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 8; i++) {
 			planets[i].DrawPlanet(posFinal[i][0], posFinal[i][1], posFinal[i][2]);
-		for (int i = 0; i < 10; i++)
-			asteroids[i]->Draw();
+		}
+
+		/*for (int i = 0; i < 10; i++)
+			asteroids[i]->Draw();*/
 
 		if (doAuto)
 			Rotar();
@@ -274,9 +275,7 @@ void reshape(int w, int h)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	//gluLookAt(0.0, 35.0, 105.0, 0.0, -9.0, 0.0, 0.0, 1.0, 1.0);
-	gluLookAt(0.0, 0.0, 105.0, 0.0, -9.0, 0.0, 0.0, 1.0, 1.0);
-	//gluLookAt(0.0, 5.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0);
+	gluLookAt(0.0, 0, 80.0, 0.0, -2.0, 0.0, 0.0, 1.0, 1.0);
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -320,17 +319,17 @@ void keyboard(unsigned char key, int x, int y)
 
 	case '1':
 		actual = 0;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '2':
 		actual = 1;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '3':
 		actual = 2;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '4':
@@ -339,22 +338,22 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case '5':
 		actual = 4;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '6':
 		actual = 5;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '7':
 		actual = 6;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '8':
 		actual = 7;
-		zoom = 5;
+		zoom = 2;
 		planetaActual = true;
 		break;
 	case '0':
