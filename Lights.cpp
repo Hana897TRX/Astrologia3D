@@ -45,7 +45,7 @@ void Lights::GlobalLight() {
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
 
-	//glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT0);
 }
 
 void Lights::SunLight() {

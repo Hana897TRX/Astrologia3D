@@ -1,9 +1,4 @@
 #pragma once
-typedef unsigned short ushort;
-typedef unsigned long ulong;
-typedef unsigned char uchar;
-
-#include <fstream>
 
 //#############################
 #include "RGBpixmap.h"
@@ -12,14 +7,11 @@ typedef unsigned char uchar;
 class Cubemap
 {
 private:
-	RGBpixmap myText[1];
-	GLuint name;
+	RGBpixmap text[6];
+	GLuint corex[6];
 	float size = 150;
 
 public:
-	Cubemap(float);
-
-	void SetTexture(char* fname);
+	Cubemap(float _size, char* bot0, char* bot1, char* mid, char* left, char* right, char* top);
 	void Draw();
 };
-

@@ -34,8 +34,7 @@ float posFinal[8][3] = {    {08.0,			0.0,		0.0},
 
 static bool doAuto = false;
 static bool seeOrbits = false;
-Cubemap universe(5);
-Sphere sun(5.0);
+Planet sun(0, 0.0, 5, 0.0, 0.0);
 
 float angulo = 0;
 float angulos[8];
@@ -50,6 +49,12 @@ enum class ANIMATION { Init, InicialPos, Idle };
 ANIMATION anim;
 Reloj timer;
 float t;
+
+//################
+
+Cubemap* map;
+
+//###############
 
 float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
@@ -117,11 +122,10 @@ void init(void)
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
-	//##################### MAIN PLANETS ###############################
+	//##################### LOAD TEXTURES ###############################
 
 	Moon::SetTexture((char*)"res/moon.bmp");
 	sun.SetTexture((char*) "res/sun.bmp");
-	//universe.SetTexture((char*)"res/universe.bmp");
 
 	planets[0] = Planet(0, 0, 0.6, 0.15f, 0.25f);
 	planets[0].SetTexture((char*) "res/mercury.bmp");
@@ -149,6 +153,10 @@ void init(void)
 
 	cout << glGetString(GL_VERSION) << " |* This project was encoded over OpenGL 4.6.0 *| ";
 
+	map = new Cubemap(400, (char*)"res/bot0.bmp", (char*)"res/bot1.bmp",
+		(char*)"res/mid.bmp", (char*)"res/left.bmp",
+		(char*)"res/right.bmp", (char*)"res/top.bmp");
+
 	//######################## ANIMATION ########################
 	timer = Reloj();
 	anim = ANIMATION::Init;
@@ -174,8 +182,8 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 
+	map->Draw();
 	dibujarEstrellas();
-
 	glScaled(zoom, zoom, zoom);
 
 	if (planetaActual) {
@@ -196,7 +204,7 @@ void display(void)
 	if (!planetaActual) {
 		glPushMatrix();
 			glMaterialfv(GL_FRONT, GL_EMISSION, lightEmission);
-				sun.HaSolidSphere();
+				sun.DrawPlanet(0, 0, 0);
 			glMaterialfv(GL_FRONT, GL_EMISSION, black);
 		glPopMatrix();
 	}
