@@ -18,9 +18,8 @@
 //#######################
 
 					//    Separación	    Coordenas random
-Planet planets[1];  //    con el sol	 sobre la circunferencia    
+				    //    con el sol	 sobre la circunferencia    
 //Asteroid* asteroids[10];
-Lights* lightConfig;
 
 float asteroidRing = 12;//					 X           Z
 float posFinal[8][3] = {    {08.0,			0.0,		0.0},
@@ -31,39 +30,38 @@ float posFinal[8][3] = {    {08.0,			0.0,		0.0},
 							{31.0,			0.0,		0.0},
 							{35.0,			0.0,		0.0},
 							{39.0,			0.0,		0.0} };
-
-static bool doAuto = false;
-static bool seeOrbits = false;
-Planet sun(0, 0.0, 5, 0.0, 0.0);
-
-float angulo = 0;
-float angulos[8];
-
-float deltaT;
-bool planetaActual = false;
-int actual = 0;
-int zoom = 1;
-
-bool pressLeft, pressRight;
-enum class ANIMATION { Init, InicialPos, Idle };
-ANIMATION anim;
-Reloj timer;
-float t;
-
-//################
-
-Cubemap* map;
-
-//###############
-
 float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
-
-int estrellas = 250;
-float** estrellasPos;
-
+float angulo = 0;
+float angulos[8];
+float deltaT;
 float r = 0.45, R = 3.0, divisiones = 12.0, divisiones2 = divisiones * 3;
+float** estrellasPos;
+float t;
+
+static bool doAuto = false;
+static bool seeOrbits = true;
+bool planetaActual = false;
+bool pressLeft, pressRight;
+
+int actual = 0;
+int zoom = 1;
+int estrellas = 250;
+
+enum class ANIMATION { Init, InicialPos, Idle };
+
+//################ Objects and Pointers
+
+Planet planets[1];
+Cubemap* map;
+Elliptica elip[2];
+ANIMATION anim;
+Reloj timer;
+Planet sun(0, 0.0, 5, 0.0, 0.0);
+Lights* lightConfig;
+
+//###############
 
 void Rotar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
@@ -164,6 +162,8 @@ void init(void)
 
 	reColocar();
 
+	planets->SeeOrbits(seeOrbits);
+
 	//################## ASTEROIDS ##################
 	/*Asteroid::SetTexture((char*)"res/asteroid.bmp");
 
@@ -174,8 +174,6 @@ void init(void)
 
 	colocarEstrellas();
 }
-
-Elliptica elip[2];
 
 void display(void)
 {
@@ -191,8 +189,8 @@ void display(void)
 		glDisable(GL_LIGHTING);
 			glTranslated(-30.0, 0.0, 0.0);
 			glScaled(10, 10, 10);
-			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8);
-			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9);
+			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8, true);
+			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9, false);
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
@@ -241,14 +239,13 @@ void display(void)
 		{
 			glScaled(zoom, zoom, zoom);
 			glTranslatef(-posFinal[actual][1], 0.0, -posFinal[actual][2]);
+			planets[actual].DrawPlanet(posFinal[actual][0], posFinal[actual][1], posFinal[actual][2]);
 		}
 		else {
 			glTranslatef(0.0, 0.0, 0.0);
-		}
-
-		for (int i = 0; i < 8; i++) {
-			planets[i].DrawPlanet(posFinal[i][0], posFinal[i][1], posFinal[i][2]);
-		}
+			for (int i = 0; i < 8; i++)
+				planets[i].DrawPlanet(posFinal[i][0], posFinal[i][1], posFinal[i][2]);
+		}		
 
 		/*for (int i = 0; i < 10; i++)
 			asteroids[i]->Draw();*/
@@ -321,44 +318,62 @@ void keyboard(unsigned char key, int x, int y)
 		actual = 0;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '2':
 		actual = 1;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '3':
 		actual = 2;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '4':
 		actual = 3;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '5':
 		actual = 4;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '6':
 		actual = 5;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '7':
 		actual = 6;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '8':
 		actual = 7;
 		zoom = 2;
 		planetaActual = true;
+		seeOrbits = false;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	case '0':
 		zoom = 1;
 		planetaActual = false;
+		seeOrbits = true;
+		planets->SeeOrbits(seeOrbits);
 		break;
 	}
 }

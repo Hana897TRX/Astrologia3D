@@ -3,9 +3,9 @@ class ZodiacalSign
 {
 public:
 	ZodiacalSign();
-	void Aries();
-	void Tauro();
-	void Geminis();
+	void Aries(float scaled, float tx, float ty, float tz);
+	void Tauro(float scaled, float tx, float ty, float tz);
+	void Geminis(float scaled, float tx, float ty, float tz);
 	void Cancer();
 	void Leo();
 	void Sagitario();

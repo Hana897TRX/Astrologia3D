@@ -2,6 +2,7 @@
 class Elliptica
 {
 public:
-	void Thingy(int, int, float, float, float, float, float, float);
+	Elliptica();
+	void Thingy(int, int, float, float, float, float, float, float, bool);
 };
 
