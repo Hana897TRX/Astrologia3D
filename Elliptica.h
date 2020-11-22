@@ -3,6 +3,6 @@ class Elliptica
 {
 public:
 	Elliptica();
-	void Thingy(int, int, float, float, float, float, float, float, bool);
+	void Thingy(int, int, float, float, float, float, float, float, bool, float);
 };
 

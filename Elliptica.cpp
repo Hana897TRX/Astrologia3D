@@ -19,7 +19,7 @@ Elliptica::Elliptica() {
 	zodiac = new ZodiacalSign();
 }
 
-void Elliptica::Thingy(int divisiones, int divisiones2, float scale, float r, float R, float cr, float cg, float cb, bool sign) {
+void Elliptica::Thingy(int divisiones, int divisiones2, float scale, float r, float R, float cr, float cg, float cb, bool sign, float _angle) {
 	int divInt = divisiones * divisiones2;
 	float wholeCircleAng = 2 * PI;
 	float anglePerDiv = wholeCircleAng / divisiones;
@@ -30,6 +30,7 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float scale, float r, fl
 
 		glPushMatrix();
 			glTranslated(0.0, 0.0, -0.6);
+			glRotated(_angle, 0.0, 0.0, 1.0);
 			glutSolidTorus(r, R, 100, 100);
 		glPopMatrix();
 
@@ -39,6 +40,7 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float scale, float r, fl
 		
 		glPushMatrix();
 			glScaled(scaled, scaled, scaled);
+			glRotated(_angle, 0.0, 0.0, 1.0);
 
 			for (int x = 0; x < divisiones; x++) {
 				//Ascendant Color line

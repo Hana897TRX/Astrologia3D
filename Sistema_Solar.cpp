@@ -3,6 +3,7 @@
 #include <glut.h>
 #include <time.h>
 #include <math.h>
+#include <iostream>
 
 //####################### - HOLA -
 #include "Sphere.h"
@@ -22,14 +23,21 @@
 //Asteroid* asteroids[10];
 
 float asteroidRing = 12;//					 X           Z
-float posFinal[8][3] = {	{08.0,		sin(211),   -cos(211)},		//	Venus
-							{11.0,		sin(216),	-cos(216)},		//	Marte
-							{15.0,		sin(186),	-cos(186)},		//	Sun
-							{19.0,		sin(158),	-cos(158)},		//	Marte
-							{24.0,		sin(71),	-cos(71)},		//	Jupiner
-							{31.0,		sin(60),	-cos(60)},		//	Saturno
-							{35.0,		sin(317),	-cos(317)},		//	Urano
-							{39.0,		sin(303),	-cos(303)} };		//	Neptuno
+
+float planetAngle[8] = { 211, 216, 186, 158, 71, 60, 317, 303 };
+
+//						MERCURY,	VENUS,		SUN,			MART,		JUPITER,	SATURNO,	URANO,		NEPTUNO
+
+float anglePerDay[8] = { 2.45,	1.60714,	0.98562628,		0.5240,		0.082191,	0.034010,	0.0117416,	0.005977584};
+
+float posFinal[8][3] = {	{08.0,		0.0,	0.0},		//	Mercury
+							{11.0,		0.0,	0.0},		//	Venus
+							{15.0,		0.0,	0.0},		//	Sun
+							{19.0,		0.0,	0.0},		//	Mart
+							{24.0,		0.0,	0.0},		//	Jupiner
+							{31.0,		0.0,	0.0},		//	Saturno
+							{35.0,		0.0,	0.0},		//	Urano
+							{39.0,		0.0,	0.0} };		//	Neptuno
 
 float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
@@ -62,22 +70,37 @@ Reloj timer;
 Planet sun(0, 0.0, 5, 0.0, 0.0);
 Lights* lightConfig;
 
+//############### DEFAULT DATE
+
+int year = 2000, month = 9, day = 29;
+
 //###############
 
 void Rotar() {
-	//for (int planeta = 0; planeta < 8; planeta++) {
-	//	angulos[planeta] -= planets[planeta].GetYearInc() * deltaT;
-	//	posFinal[planeta][1] = cos(angulos[planeta]) * posFinal[planeta][0];
-	//	posFinal[planeta][2] = sin(angulos[planeta]) * posFinal[planeta][0];
-	//}
+
 }
 
 //Asignar coordenadas random dentro de sus orbitas
+
 void reColocar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
-		posFinal[planeta][1] *= posFinal[planeta][0];
-		posFinal[planeta][2] *= posFinal[planeta][0];
+		posFinal[planeta][1] =	cos(planetAngle[planeta] * M_PI / 180) * posFinal[planeta][0];
+		posFinal[planeta][2] = -sin(planetAngle[planeta] * M_PI / 180) * posFinal[planeta][0];
 	}
+}
+
+void setDate(int _year, int _month, int _day) {
+	int finalYear, finalMonth, finalDay;
+
+	finalYear = _year - year;
+	finalMonth = _month - month;
+	finalDay = _day - day;
+
+	float totalDays = finalYear * 365.25 + finalMonth * 30.5 + finalDay;
+
+	for (int x = 0; x < 8; x++)
+		planetAngle[x] = std::fmod((planetAngle[x] + anglePerDay[x] * totalDays), 360);
+	reColocar();
 }
 
 void colocarEstrellas() {
@@ -159,7 +182,7 @@ void init(void)
 	anim = ANIMATION::Init;
 	deltaT = 0.005;
 
-	reColocar();
+	setDate(2000, 11, 9);
 
 	planets->SeeOrbits(seeOrbits);
 
@@ -188,8 +211,8 @@ void display(void)
 		glDisable(GL_LIGHTING);
 			glTranslated(-30.0, 0.0, 0.0);
 			glScaled(10, 10, 10);
-			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8, true);
-			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9, false);
+			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8, true, planetAngle[actual]);
+			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9, false, planetAngle[actual]);
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
