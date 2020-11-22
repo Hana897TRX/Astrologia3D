@@ -22,14 +22,15 @@
 //Asteroid* asteroids[10];
 
 float asteroidRing = 12;//					 X           Z
-float posFinal[8][3] = {    {08.0,			0.0,		0.0},
-							{11.0,			0.0,		0.0},
-							{15.0,			0.0,		0.0},
-							{19.0,			0.0,		0.0},
-							{24.0,			0.0,		0.0},
-							{31.0,			0.0,		0.0},
-							{35.0,			0.0,		0.0},
-							{39.0,			0.0,		0.0} };
+float posFinal[8][3] = {	{08.0,		sin(211),   -cos(211)},		//	Venus
+							{11.0,		sin(216),	-cos(216)},		//	Marte
+							{15.0,		sin(186),	-cos(186)},		//	Sun
+							{19.0,		sin(158),	-cos(158)},		//	Marte
+							{24.0,		sin(71),	-cos(71)},		//	Jupiner
+							{31.0,		sin(60),	-cos(60)},		//	Saturno
+							{35.0,		sin(317),	-cos(317)},		//	Urano
+							{39.0,		sin(303),	-cos(303)} };		//	Neptuno
+
 float eyex = 0, eyey = 35, pY = 0, pX = 0;
 float lightEmission[4] = { 1.0, 1.0, 0.0, 1.0 };
 float black[4] = { 0.0, 0.0, 0.0, 1.0 };
@@ -64,20 +65,18 @@ Lights* lightConfig;
 //###############
 
 void Rotar() {
-	for (int planeta = 0; planeta < 8; planeta++) {
-		angulos[planeta] -= planets[planeta].GetYearInc() * deltaT;
-		posFinal[planeta][1] = cos(angulos[planeta]) * posFinal[planeta][0];
-		posFinal[planeta][2] = sin(angulos[planeta]) * posFinal[planeta][0];
-	}
+	//for (int planeta = 0; planeta < 8; planeta++) {
+	//	angulos[planeta] -= planets[planeta].GetYearInc() * deltaT;
+	//	posFinal[planeta][1] = cos(angulos[planeta]) * posFinal[planeta][0];
+	//	posFinal[planeta][2] = sin(angulos[planeta]) * posFinal[planeta][0];
+	//}
 }
 
 //Asignar coordenadas random dentro de sus orbitas
 void reColocar() {
 	for (int planeta = 0; planeta < 8; planeta++) {
-		float angulo = 1 + rand() % 360;
-		angulos[planeta] = angulo;
-		posFinal[planeta][1] = cos(angulo) * posFinal[planeta][0];
-		posFinal[planeta][2] = sin(angulo) * posFinal[planeta][0];
+		posFinal[planeta][1] *= posFinal[planeta][0];
+		posFinal[planeta][2] *= posFinal[planeta][0];
 	}
 }
 
