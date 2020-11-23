@@ -208,28 +208,121 @@ void RomanNumerals::Eight(float scaled, float tx, float ty, float tz)
 		glPushMatrix();
 			glScaled(0.25, 1.0, 0.25);
 			glScaled(scaled, scaled, scaled);
-			glTranslated(8, 0.0, 0.0);
+			glTranslated(7, 0.0, 0.0);
 			glutSolidCube(1.0);
 		glPopMatrix();
 	glPopMatrix();
 }
 
-void RomanNumerals::Nine()
+void RomanNumerals::Nine(float scaled, float tx, float ty, float tz)
 {
+	glPushMatrix();
+		glTranslated(tx, ty, tz);
 
+		glPushMatrix();
+			glRotated(45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glRotated(-45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glTranslated(-3, 0.0, 0.0);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+	glPopMatrix();
 }
 
-void RomanNumerals::Ten()
+void RomanNumerals::Ten(float scaled, float tx, float ty, float tz)
 {
+	glPushMatrix();
+		glTranslated(tx, ty, tz);
 
+		glPushMatrix();
+			glRotated(45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glRotated(-45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+	glPopMatrix();
 }
 
-void RomanNumerals::Eleven()
+void RomanNumerals::Eleven(float scaled, float tx, float ty, float tz)
 {
+	glPushMatrix();
+		glTranslated(tx, ty, tz);
 
+		glPushMatrix();
+			glRotated(45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glRotated(-45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glTranslated(3, 0.0, 0.0);
+			glutSolidCube(1.0);
+		glPopMatrix();
+	glPopMatrix();
 }
 
-void RomanNumerals::Twelve()
+void RomanNumerals::Twelve(float scaled, float tx, float ty, float tz)
 {
+	glPushMatrix();
+		glTranslated(tx, ty, tz);
 
+		glPushMatrix();
+			glRotated(45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glRotated(-45, 0.0, 0.0, 1.0);
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glTranslated(3, 0.0, 0.0);
+			glutSolidCube(1.0);
+		glPopMatrix();
+
+		glPushMatrix();
+			glScaled(0.25, 1.0, 0.25);
+			glScaled(scaled, scaled, scaled);
+			glTranslated(5, 0.0, 0.0);
+			glutSolidCube(1.0);
+		glPopMatrix();
+	glPopMatrix();
 }

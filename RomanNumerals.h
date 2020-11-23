@@ -11,9 +11,9 @@ public:
 	void Six(float scaled, float tx, float ty, float tz);
 	void Seven(float scaled, float tx, float ty, float tz);
 	void Eight(float scaled, float tx, float ty, float tz);
-	void Nine();
-	void Ten();
-	void Eleven();
-	void Twelve();
+	void Nine(float scaled, float tx, float ty, float tz);
+	void Ten(float scaled, float tx, float ty, float tz);
+	void Eleven(float scaled, float tx, float ty, float tz);
+	void Twelve(float scaled, float tx, float ty, float tz);
 };
 

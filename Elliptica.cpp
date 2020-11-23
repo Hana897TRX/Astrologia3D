@@ -96,12 +96,12 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 
 			if (sign) {
 				glTranslated(0.0, 0.0, 0.1);
-					zodiac->Aries(0.15, 22 * cos(15 * PI / 180), 22 * sin(15 * PI / 180), 0);
-					zodiac->Tauro(0.15, 20 * cos(45 * PI / 180), 20 * sin(45 * PI / 180), 0);
-					zodiac->Geminis(0.15, 20 * cos(75 * PI / 180), 20 * sin(75 * PI / 180), 0);
-					zodiac->Cancer(0.15, 19 * cos(105 * PI / 180), 19 * sin(105 * PI / 180), 0);
-					zodiac->Leo(0.20, 15 * cos(135 * PI / 180), 15 * sin(135 * PI / 180), 0);
-					zodiac->Sagitario(0.12, 25 * cos(255 * PI / 180), 25 * sin(255 * PI / 180), 0);
+					zodiac->Aries(		0.15,		22 * cos(15 * PI / 180),	22 * sin(15 * PI / 180),	0);
+					zodiac->Tauro(		0.15,		20 * cos(45 * PI / 180),	20 * sin(45 * PI / 180),	0);
+					zodiac->Geminis(	0.15,		20 * cos(75 * PI / 180),	20 * sin(75 * PI / 180),	0);
+					zodiac->Cancer(		0.15,		19 * cos(105 * PI / 180),	19 * sin(105 * PI / 180),	0);
+					zodiac->Leo(		0.20,		15 * cos(135 * PI / 180),	15 * sin(135 * PI / 180),	0);
+					zodiac->Sagitario(	0.10,		30 * cos(255 * PI / 180),	30 * sin(255 * PI / 180),	0);
 					glColor3f(0.7, 0.4, 0.8);
 			}
 			else {
@@ -113,6 +113,10 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 				roman->Six(		0.25,	 2.2  * cos(165 * PI / 180),	2.2  * sin(165 * PI / 180),  0);
 				roman->Seven(	0.25,	 2.3  * cos(195 * PI / 180),	2.3  * sin(195 * PI / 180),  0);
 				roman->Eight(	0.25,	 2.3  * cos(220 * PI / 180),	2.3  * sin(220 * PI / 180),  0);
+				roman->Nine(	0.25,	 2.05 * cos(258 * PI / 180),	2.05 * sin(258 * PI / 180),  0);
+				roman->Ten(		0.25,	 2.05 * cos(285 * PI / 180),	2.05 * sin(285 * PI / 180),  0);
+				roman->Eleven(	0.25,	 2.05 * cos(315 * PI / 180),	2.05 * sin(315 * PI / 180),  0);
+				roman->Twelve(	0.25,	 1.95 * cos(343 * PI / 180),		1.95 * sin(343 * PI / 180),  0);
 			}
 
 		glPopMatrix();
