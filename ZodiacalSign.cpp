@@ -358,8 +358,10 @@ void ZodiacalSign::Geminis(float scaled, float tx, float ty, float tz) {
 	glPopMatrix();
 }
 
-void ZodiacalSign::Cancer(void) {
+void ZodiacalSign::Cancer(float scaled, float tx, float ty, float tz) {
 	glPushMatrix();
+	glScaled(scaled, scaled, scaled);
+	glTranslated(tx, ty, tz);
 	//Torus
 	glPushMatrix();
 	glTranslated(-1.0, 1.5, 0.0);
@@ -467,8 +469,10 @@ void ZodiacalSign::Cancer(void) {
 	glPopMatrix();
 }
 
-void ZodiacalSign::Leo(void) {
+void ZodiacalSign::Leo(float scaled, float tx, float ty, float tz) {
 	glPushMatrix();
+	glScaled(scaled, scaled, scaled);
+	glTranslated(tx, ty, tz);
 	glPushMatrix();
 	glTranslated(0.1, 0.0, 0.5);
 	glScaled(0.2, 0.2, 0.1);
@@ -619,6 +623,40 @@ void ZodiacalSign::Leo(void) {
 	glPopMatrix();
 }
 
+void ZodiacalSign::Sagitario(float scaled, float tx, float ty, float tz) {
+	glPushMatrix();
+	glScaled(scaled, scaled, scaled);
+	glTranslated(tx, ty, tz);
+
+	glPushMatrix();
+	glTranslated(-1.0, -1.0, 0.0);
+	glRotated(45, 0.0, 0.0, 1.0);
+	glScaled(0.4, 2.5, 0.4);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-0.8, -0.8, 0.0);
+	glRotated(-45, 0.0, 0.0, 1.0);
+	glScaled(0.4, 6.0, 0.4);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+	glTranslated(0.35, 1.5, 0.0);
+	glPushMatrix();
+	glRotated(90, 0.0, 0.0, 1.0);
+	glScaled(0.4, 2.5, 0.4);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+	glTranslated(1.1, -1.1, 0.0);
+	glPushMatrix();
+	glScaled(0.4, 2.5, 0.4);
+	glutSolidCube(1.0);
+	glPopMatrix();
+	glPopMatrix();
+}
+
 void ZodiacalSign::Acuario(void) {
 	//Top
 	glPushMatrix();
@@ -709,38 +747,6 @@ void ZodiacalSign::Acuario(void) {
 	glutSolidCube(1.0);
 	glPopMatrix();
 
-	glPopMatrix();
-}
-
-void ZodiacalSign::Sagitario(void) {
-	glPushMatrix();
-
-	glPushMatrix();
-	glTranslated(-1.0, -1.0, 0.0);
-	glRotated(45, 0.0, 0.0, 1.0);
-	glScaled(0.4, 2.5, 0.4);
-	glutSolidCube(1.0);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslated(-0.8, -0.8, 0.0);
-	glRotated(-45, 0.0, 0.0, 1.0);
-	glScaled(0.4, 6.0, 0.4);
-	glutSolidCube(1.0);
-	glPopMatrix();
-
-	glTranslated(0.35, 1.5, 0.0);
-	glPushMatrix();
-	glRotated(90, 0.0, 0.0, 1.0);
-	glScaled(0.4, 2.5, 0.4);
-	glutSolidCube(1.0);
-	glPopMatrix();
-
-	glTranslated(1.1, -1.1, 0.0);
-	glPushMatrix();
-	glScaled(0.4, 2.5, 0.4);
-	glutSolidCube(1.0);
-	glPopMatrix();
 	glPopMatrix();
 }
 

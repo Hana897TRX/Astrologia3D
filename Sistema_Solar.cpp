@@ -24,11 +24,19 @@
 
 float asteroidRing = 12;//					 X           Z
 
+//float planetAngle[8] = { 332, 330, 353, 23, 35, 43, 318, 305 };
 float planetAngle[8] = { 211, 216, 186, 158, 71, 60, 317, 303 };
+//float planetAngle[8] = { 228, 201, 208, 182, 212, 321, 29, 163 };
+//float planetAngle[8] = { 213, 157, 198, 186, 271, 80, 198, 243 };	
 
-//						MERCURY,	VENUS,		SUN,			MART,		JUPITER,	SATURNO,	URANO,		NEPTUNO
-
-float anglePerDay[8] = { 2.45,	1.60714,	0.98562628,		0.5240,		0.082191,	0.034010,	0.0117416,	0.005977584};
+float anglePerDay[8] = {	4.0909090909090909090909090909091, //	MERCURY
+														  1.6, //	VENUS
+						   0.98562628336755646817248459958932, //	SUN
+						   0.52401746724890829694323144104803, //	MART
+						   0.09126169290440337668263746292494, //	JUPITER
+						   0.03341106045313750739567744405388, //	SATURNO
+						   0.01173364623056614843062481666178, //	URANO
+						   0.00597349262647003920104536120963};//	NEPTUNO
 
 float posFinal[8][3] = {	{08.0,		0.0,	0.0},		//	Mercury
 							{11.0,		0.0,	0.0},		//	Venus
@@ -64,7 +72,7 @@ enum class ANIMATION { Init, InicialPos, Idle };
 
 Planet planets[1];
 Cubemap* map;
-Elliptica elip[2];
+Elliptica* elip[2];
 ANIMATION anim;
 Reloj timer;
 Planet sun(0, 0.0, 5, 0.0, 0.0);
@@ -72,7 +80,10 @@ Lights* lightConfig;
 
 //############### DEFAULT DATE
 
+//int year = 2000, month = 3, day = 13;
 int year = 2000, month = 9, day = 29;
+int hour = 12, minutes = 30;
+//int year = 1972, month = 10, day = 11;
 
 //###############
 
@@ -89,7 +100,10 @@ void reColocar() {
 	}
 }
 
-void setDate(int _year, int _month, int _day) {
+void setDate(int _year, int _month, int _day, int _hours, int _minutes) {
+	hour = _hours;
+	minutes = _minutes;
+
 	int finalYear, finalMonth, finalDay;
 
 	finalYear = _year - year;
@@ -98,8 +112,20 @@ void setDate(int _year, int _month, int _day) {
 
 	float totalDays = finalYear * 365.25 + finalMonth * 30.5 + finalDay;
 
-	for (int x = 0; x < 8; x++)
+	planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
+
+	//if (totalDays < 0)
+	//	//planetAngle[0] *= -1;
+	//	planetAngle[0] = 360 + planetAngle[0] * -1;
+
+	for (int x = 1; x < 8; x++) {
 		planetAngle[x] = std::fmod((planetAngle[x] + anglePerDay[x] * totalDays), 360);
+		
+		//if (totalDays < 0)
+		//	//planetAngle[x] *= -1;
+		//	planetAngle[x] = 360 + planetAngle[x] * -1;
+	}
+
 	reColocar();
 }
 
@@ -150,7 +176,7 @@ void init(void)
 	planets[0] = Planet(0, 0, 0.6, 0.15f, 0.25f);
 	planets[0].SetTexture((char*) "res/mercury.bmp");
 
-	planets[1] = Planet(1, 0, 1.0, 0.13f, 0.23f);
+	planets[1] = Planet(1, 0, 0.8, 0.13f, 0.23f);
 	planets[1].SetTexture((char*) "res/venus.bmp");
 
 	planets[2] = Planet(1, 0, 0.8, 0.11f, 0.21f);
@@ -159,30 +185,37 @@ void init(void)
 	planets[3] = Planet(2, 0, 0.75, 0.09f, 0.19f);
 	planets[3].SetTexture((char*) "res/mars.bmp");
 	
-	planets[4] = Planet(5, 0, 2.5, 0.07f, 0.17f);
+	planets[4] = Planet(5, 0, 1.0, 0.07f, 0.17f);
 	planets[4].SetTexture((char*) "res/jupiter.bmp");
 
-	planets[5] = Planet(2, 1, 2.0, 0.05f, 0.15f);
+	planets[5] = Planet(2, 1, 1.0, 0.05f, 0.15f);
 	planets[5].SetTexture((char*) "res/saturn.bmp");
 
-	planets[6] = Planet(2, 0, 1.2, 0.03f, 0.13f);
+	planets[6] = Planet(2, 0, 0.8, 0.03f, 0.13f);
 	planets[6].SetTexture((char*) "res/uranus.bmp");
 
-	planets[7] = Planet(1, 0, 0.8, 0.02f, 0.11f);
+	planets[7] = Planet(1, 0, 0.6, 0.02f, 0.11f);
 	planets[7].SetTexture((char*) "res/neptune.bmp");
 
 	cout << glGetString(GL_VERSION) << " |* This project was encoded over OpenGL 4.6.0 *| ";
 
-	map = new Cubemap(400, (char*)"res/bot0.bmp", (char*)"res/bot1.bmp",
-		(char*)"res/mid.bmp", (char*)"res/left.bmp",
-		(char*)"res/right.bmp", (char*)"res/top.bmp");
+	map = new Cubemap(400,	(char*)"res/bot0.bmp",	(char*)"res/bot1.bmp",
+							(char*)"res/mid.bmp",	(char*)"res/left.bmp",
+							(char*)"res/right.bmp", (char*)"res/top.bmp");
 
 	//######################## ANIMATION ########################
 	timer = Reloj();
 	anim = ANIMATION::Init;
 	deltaT = 0.005;
 
-	setDate(2000, 11, 9);
+	setDate(2000, 11, 9, 0, 42);
+	//setDate(2000, 9, 29);
+	//setDate(2000, 4, 26);
+	//setDate(2002, 6, 4, 13, 5);
+	//setDate(1934, 10, 22);
+
+	elip[0] = new Elliptica(planetAngle[2], hour, minutes);
+	elip[1] = new Elliptica(planetAngle[2], hour, minutes);
 
 	planets->SeeOrbits(seeOrbits);
 
@@ -209,10 +242,10 @@ void display(void)
 	if (planetaActual) {
 		glPushMatrix();
 		glDisable(GL_LIGHTING);
-			glTranslated(-30.0, 0.0, 0.0);
+			glTranslated(-30.0, 0.0, -2);
 			glScaled(10, 10, 10);
-			elip[0].Thingy(12, 3, 1.0, r, R, 0.8, 0.95, 0.8, true, planetAngle[actual]);
-			elip[1].Thingy(12, 4, 0.75, r * 0.75, R * 0.75, 0.75, 0.9, 0.9, false, planetAngle[actual]);
+			elip[1]->Thingy(12, 4,  0.30, 1.5, r * 0.65, R * 0.65, 1.0, 1.0, 1.9, false, planetAngle[actual]);
+			elip[0]->Thingy(12, 3,	0.40, 1.0,		 r,			R, 0.8, 0.95, 0.8, true, planetAngle[actual]);
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
