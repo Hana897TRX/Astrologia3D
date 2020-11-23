@@ -13,7 +13,7 @@ ZodiacalSign::ZodiacalSign() {
 }
 
 void ZodiacalSign::Aries(float scaled, float tx, float ty, float tz) {
-	glDisable(GL_LIGHTING);
+	glColor3f(0.968, 0.031, 0.149);
 	glPushMatrix();
 	glScaled(scaled, scaled, scaled);
 	glTranslated(tx, ty, tz);
@@ -121,11 +121,11 @@ void ZodiacalSign::Aries(float scaled, float tx, float ty, float tz) {
 	glPopMatrix();
 
 	glPopMatrix();
-	glEnable(GL_LIGHTING);
 }
 
 void ZodiacalSign::Tauro(float scaled, float tx, float ty, float tz) {
 	//Center
+	glColor3f(0.2, 0.5, 0.3);
 	glPushMatrix();
 	glScaled(scaled, scaled, scaled);
 	glTranslated(tx, ty, tz);
@@ -135,9 +135,7 @@ void ZodiacalSign::Tauro(float scaled, float tx, float ty, float tz) {
 	glutSolidTorus(0.2, 0.6, 60, 60);
 	glPopMatrix();
 
-
 	//Right
-
 	glPushMatrix();
 	glTranslated(0.0, 0.36, -0.35);
 
@@ -243,6 +241,7 @@ void ZodiacalSign::Tauro(float scaled, float tx, float ty, float tz) {
 }
 
 void ZodiacalSign::Geminis(float scaled, float tx, float ty, float tz) {
+	glColor3f(0.976, 0.823, 0.101);
 	glPushMatrix();
 	glScaled(scaled, scaled, scaled);
 	glTranslated(tx, ty, tz);
@@ -359,6 +358,7 @@ void ZodiacalSign::Geminis(float scaled, float tx, float ty, float tz) {
 }
 
 void ZodiacalSign::Cancer(float scaled, float tx, float ty, float tz) {
+	glColor3f(0.560, 0.537, 0.941);
 	glPushMatrix();
 	glScaled(scaled, scaled, scaled);
 	glTranslated(tx, ty, tz);
@@ -470,6 +470,7 @@ void ZodiacalSign::Cancer(float scaled, float tx, float ty, float tz) {
 }
 
 void ZodiacalSign::Leo(float scaled, float tx, float ty, float tz) {
+	glColor3f(0.968, 0.031, 0.149);
 	glPushMatrix();
 	glScaled(scaled, scaled, scaled);
 	glTranslated(tx, ty, tz);

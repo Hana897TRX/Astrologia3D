@@ -9,6 +9,7 @@
 //##########################
 #include "Elliptica.h"
 #include "ZodiacalSign.h"
+#include "RomanNumerals.h"
 //##########################
 							// Aries - Tauro - Geminis - Cancer -  Leo -  Virgo - Libra -	Escorpio -	Sagitario - Capricornio - Acuario - Piscis
 int ascendant[12][12] = {	{	10,		11,		12,			1,		2,		3,		4,			5,			6,			7,			8,			9		},
@@ -28,6 +29,7 @@ int ascendant[12][12] = {	{	10,		11,		12,			1,		2,		3,		4,			5,			6,			7,			8,		
 float scaled = 0.85;
 
 ZodiacalSign* zodiac;
+RomanNumerals* roman;
 
 Elliptica::Elliptica(float _solarAngle, int _hour, int _minutes) {
 	zodiac = new ZodiacalSign();
@@ -57,7 +59,7 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 				glRotated(-_angle, 0.0, 0.0, 1.0);
 			}
 			else {
-				glTranslated(0.38, 0.0, -offset);
+				glTranslated(0.25, 0.0, -offset);
 				glRotated(-30 * zodiacSign, 0.0, 0.0, 1.0);
 			}
 			glColor3f(cr, cg, cb);
@@ -74,7 +76,7 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 			for (int x = 0; x < divisiones; x++) {
 
 				//Ascendant Color line
-				if (x == zodiacSign - 1)
+				if (x == 0)
 					glColor3f(1.0, 0.0, 0.0);
 				else
 					glColor3f(0.0, 0.0, 0.0);
@@ -99,8 +101,18 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 					zodiac->Geminis(0.15, 20 * cos(75 * PI / 180), 20 * sin(75 * PI / 180), 0);
 					zodiac->Cancer(0.15, 19 * cos(105 * PI / 180), 19 * sin(105 * PI / 180), 0);
 					zodiac->Leo(0.20, 15 * cos(135 * PI / 180), 15 * sin(135 * PI / 180), 0);
-					zodiac->Sagitario(0.12, 25 * cos(245 * PI / 180), 25 * sin(245 * PI / 180), 0);
+					zodiac->Sagitario(0.12, 25 * cos(255 * PI / 180), 25 * sin(255 * PI / 180), 0);
 					glColor3f(0.7, 0.4, 0.8);
+			}
+			else {
+				roman->One(		0.25,	 2.05 * cos(18 * PI / 180),		2.05 * sin(18 * PI / 180),   0);
+				roman->Two(		0.25,	 2.05 * cos(45 * PI / 180),		2.05 * sin(45 * PI / 180),   0);
+				roman->Three(	0.25,	 2.05 * cos(78 * PI / 180),		2.05 * sin(78 * PI / 180),   0);
+				roman->Four(	0.25,	 2.05 * cos(105 * PI / 180),	2.05 * sin(105 * PI / 180),  0);
+				roman->Five(	0.25,	 2.05 * cos(135 * PI / 180),	2.05 * sin(135 * PI / 180),  0);
+				roman->Six(		0.25,	 2.2  * cos(165 * PI / 180),	2.2  * sin(165 * PI / 180),  0);
+				roman->Seven(	0.25,	 2.3  * cos(195 * PI / 180),	2.3  * sin(195 * PI / 180),  0);
+				roman->Eight(	0.25,	 2.3  * cos(220 * PI / 180),	2.3  * sin(220 * PI / 180),  0);
 			}
 
 		glPopMatrix();
