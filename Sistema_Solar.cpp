@@ -29,6 +29,7 @@ using namespace std;
 float asteroidRing = 12;//					 X           Z
 
 //float planetAngle[8] = { 332, 330, 353, 23, 35, 43, 318, 305 };
+float originalAngle[8] = { 211, 216, 186, 158, 71, 60, 317, 303 };
 float planetAngle[8] = { 211, 216, 186, 158, 71, 60, 317, 303 };
 //float planetAngle[8] = { 228, 201, 208, 182, 212, 321, 29, 163 };
 //float planetAngle[8] = { 213, 157, 198, 186, 271, 80, 198, 243 };	
@@ -84,10 +85,13 @@ Lights* lightConfig;
 
 //############### DEFAULT DATE
 
-//int year = 2000, month = 3, day = 13;
+
 int year = 2000, month = 9, day = 29;
 int hour = 12, minutes = 30;
+
+
 //int year = 1972, month = 10, day = 11;
+//int year = 2000, month = 3, day = 13;
 
 //###############
 
@@ -130,30 +134,22 @@ void setDate(int _year, int _month, int _day, int _hours, int _minutes) {
 
 	float totalDays = finalYear * 365.25 + finalMonth * 30.5 + finalDay;
 
+	//	Mercury
 	switch (periodo) {
 	case 0:
-		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0]), 360);
+		planetAngle[0] = std::fmod((originalAngle[0] + anglePerDay[0]), 360);
 		break;
 	case 1:
-		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 1) * 63)), 360);
+		planetAngle[0] = std::fmod((originalAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 1) * 63)), 360);
 		break;
 	case 2:
-		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
+		planetAngle[0] = std::fmod((originalAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
 		break;
 	}
 
-	//planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
-
-	//if (totalDays < 0)
-	//	//planetAngle[0] *= -1;
-	//	planetAngle[0] = 360 + planetAngle[0] * -1;
-
+	//	Other planets
 	for (int x = 1; x < 8; x++) {
-		planetAngle[x] = std::fmod((planetAngle[x] + anglePerDay[x] * totalDays), 360);
-		
-		//if (totalDays < 0)
-		//	//planetAngle[x] *= -1;
-		//	planetAngle[x] = 360 + planetAngle[x] * -1;
+		planetAngle[x] = std::fmod((originalAngle[x] + anglePerDay[x] * totalDays), 360);
 	}
 
 	reColocar();
@@ -185,7 +181,7 @@ void GetDate() {
 
 	datex[4] = atoi(date.c_str());
 	
-	std::cout << "Your date is: Year<" << datex[0] << "> Month <" << datex[1] << "> Day <" << datex[2] << "> Hour <" << datex[3] << "> Minutes <" << datex[4] << ">\n";
+	std::cout << "Your information is: Year<" << datex[0] << "> Month <" << datex[1] << "> Day <" << datex[2] << "> Hour <" << datex[3] << "> Minutes <" << datex[4] << ">\n";
 	setDate(datex[0], datex[1], datex[2], datex[3], datex[4]);
 }
 
@@ -434,6 +430,16 @@ void keyboard(unsigned char key, int x, int y)
 	case 'e':
 	case 'E':
 		zoom += 1;
+		break;
+
+	case 'm':
+		setDate(2002, 6, 4, 13, 5);
+		break;
+	case 'n':
+		setDate(2000, 11, 9, 0, 42);
+		break;
+	case 'b':
+		setDate(2000, 6, 14, 19, 0);
 		break;
 
 	case '1':
