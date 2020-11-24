@@ -71,15 +71,29 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 		glTranslated(0.54, 0.0, 0.1);
 		
 		glPushMatrix();
-			glRotated(-_angle, 0.0, 0.0, 1.0);
+			if(sign)
+				glRotated(-_angle, 0.0, 0.0, 1.0);
+			else {
+				glRotated(30 * (zodiacSign - 1), 0.0, 0.0, 1.0);
+				glRotated(-_angle, 0.0, 0.0, 1.0);
+			}
+
 			glScaled(scaled, scaled, scaled);
 			for (int x = 0; x < divisiones; x++) {
 
 				//Ascendant Color line
-				if (x == 0)
-					glColor3f(1.0, 0.0, 0.0);
-				else
-					glColor3f(0.0, 0.0, 0.0);
+				if (sign) {
+					if (x == zodiacSign - 1)
+						glColor3f(1.0, 0.0, 0.0);
+					else
+						glColor3f(0.0, 0.0, 0.0);
+				}
+				else {
+					if (x == 0)
+						glColor3f(1.0, 0.0, 0.0);
+					else
+						glColor3f(0.0, 0.0, 0.0);
+				}
 
 				glBegin(GL_LINES);
 					glVertex2f((R - r) * cos(x * anglePerDiv), (R - r) * sin(x * anglePerDiv));
@@ -101,7 +115,13 @@ void Elliptica::Thingy(int divisiones, int divisiones2, float offset, float scal
 				zodiac->Geminis(	0.15,		20 * cos(75  * PI / 180),	20 * sin(75  * PI / 180),	0);
 				zodiac->Cancer(		0.15,		19 * cos(105 * PI / 180),	19 * sin(105 * PI / 180),	0);
 				zodiac->Leo(		0.20,		15 * cos(135 * PI / 180),	15 * sin(135 * PI / 180),	0);
+				zodiac->Virgo(		0.10,		32 * cos(165 * PI / 180),	32 * sin(165 * PI / 180),	0);
+				zodiac->Libra(		0.20,		15 * cos(193 * PI / 180),	15 * sin(193 * PI / 180),	0);
+				zodiac->Escorpio(	0.15,		20 * cos(222 * PI / 180),	20 * sin(222 * PI / 180),	0);
 				zodiac->Sagitario(	0.10,		30 * cos(255 * PI / 180),	30 * sin(255 * PI / 180),	0);
+				zodiac->Capricornio(0.10,		30 * cos(290 * PI / 180),	30 * sin(290 * PI / 180),	0);
+				zodiac->Acuario(	0.10,		30 * cos(315 * PI / 180),	30 * sin(315 * PI / 180),	0);
+				zodiac->Piscis(		0.10,		30 * cos(345 * PI / 180),	30 * sin(345 * PI / 180),	0);
 				glColor3f(0.7, 0.4, 0.8);
 			}
 			else {

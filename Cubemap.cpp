@@ -36,87 +36,87 @@ Cubemap::Cubemap(float _size, char* bot0, char* bot1, char* mid, char* left, cha
 }
 
 void Cubemap::Draw() {
-	//glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	glColor3f(0.1, 0.1, 0.1);
 	glPushMatrix();
 		glTranslated(-200.0, -150.0, -250.0);
 
-		//glBindTexture(GL_TEXTURE_2D, corex[0]);
+		glBindTexture(GL_TEXTURE_2D, corex[0]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(0, 0, 0);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(size, 0, 0);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(size, 0, size);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(0, 0, size);
 		glEnd();
 
-		//glBindTexture(GL_TEXTURE_2D, corex[4]);
+		glBindTexture(GL_TEXTURE_2D, corex[4]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(0, 0, 0);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(0, 0, size);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(0, size, size);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(0, size, 0);
 		glEnd();
 
 
-		//glBindTexture(GL_TEXTURE_2D, corex[2]);
+		glBindTexture(GL_TEXTURE_2D, corex[2]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(size, 0, 0);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(0, 0, 0);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(0, size, 0);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(size, size, 0);
 		glEnd();
 
-		//glBindTexture(GL_TEXTURE_2D, corex[3]);
+		glBindTexture(GL_TEXTURE_2D, corex[3]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(size, 0, 0);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(size, 0, size);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(size, size, size);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(size, size, 0);
 		glEnd();
 
-		//glBindTexture(GL_TEXTURE_2D, corex[1]);
+		glBindTexture(GL_TEXTURE_2D, corex[1]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(size, 0, size);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(0, 0, size);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(0, size, size);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(size, size, size);
 		glEnd();
 
-		//glBindTexture(GL_TEXTURE_2D, corex[5]);
+		glBindTexture(GL_TEXTURE_2D, corex[5]);
 		glBegin(GL_QUADS);
-			//glTexCoord2f(0, 0);
+			glTexCoord2f(0, 0);
 				glVertex3f(0, size, 0);
-			//glTexCoord2f(0, 1);
+			glTexCoord2f(0, 1);
 				glVertex3f(size, size, 0);
-			//glTexCoord2f(1, 1);
+			glTexCoord2f(1, 1);
 				glVertex3f(size, size, size);
-			//glTexCoord2f(1, 0);
+			glTexCoord2f(1, 0);
 				glVertex3f(0, size, size);
 		glEnd();
 
-		//glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glEnable(GL_LIGHTING);
 	glPopMatrix();
-	//glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);
 }

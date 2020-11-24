@@ -4,8 +4,10 @@
 #include <time.h>
 #include <math.h>
 #include <iostream>
+#include <string>
+#include <vector>
 
-//####################### - HOLA -
+//#######################
 #include "Sphere.h"
 #include "Planet.h"
 #include "Moon.h"
@@ -17,6 +19,8 @@
 #include "Reloj.h"
 #include "Elliptica.h"
 //#######################
+
+using namespace std;
 
 					//    Separación	    Coordenas random
 				    //    con el sol	 sobre la circunferencia    
@@ -75,7 +79,7 @@ Cubemap* map;
 Elliptica* elip[2];
 ANIMATION anim;
 Reloj timer;
-Planet sun(0, 0.0, 5, 0.0, 0.0);
+Planet sun(1, 0.0, 2.5, 0.0, 0.0);
 Lights* lightConfig;
 
 //############### DEFAULT DATE
@@ -87,8 +91,33 @@ int hour = 12, minutes = 30;
 
 //###############
 
+void GetDate() {
+	std::string date = "", segment = "";
+	std::cout << "Get your date with the following format <Y-M-D>: 2000-12-26\n>>";
+	std::cin >> date;
+	char delimiter = '-';
+	std::vector<std::string> seglist;
+
+	/*while (getline(date, segment, delimiter)) {
+		
+	}*/
+
+}
+
 void Rotar() {
 
+}
+
+void Fog() {
+	GLfloat density = 0.0030;
+	//GLfloat fogColor[4] = { 0.541, 0.023, 0.556, 1.0 };
+	GLfloat fogColor[4] = { 0.01, 0.01, 0.01, 1.0 };
+	glEnable(GL_FOG);
+	glFogi(GL_FOG_MODE, GL_EXP);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, density);
+	glFogf(GL_FOG_START, 1.5);
+	glFogf(GL_FOG_END, 3.0);
 }
 
 //Asignar coordenadas random dentro de sus orbitas
@@ -110,9 +139,23 @@ void setDate(int _year, int _month, int _day, int _hours, int _minutes) {
 	finalMonth = _month - month;
 	finalDay = _day - day;
 
+	int periodo = _month / 4;
+
 	float totalDays = finalYear * 365.25 + finalMonth * 30.5 + finalDay;
 
-	planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
+	switch (periodo) {
+	case 0:
+		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0]), 360);
+		break;
+	case 1:
+		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 1) * 63)), 360);
+		break;
+	case 2:
+		planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
+		break;
+	}
+
+	//planetAngle[0] = std::fmod((planetAngle[0] + anglePerDay[0] * (totalDays - (finalYear + 2) * 63)), 360);
 
 	//if (totalDays < 0)
 	//	//planetAngle[0] *= -1;
@@ -171,7 +214,7 @@ void init(void)
 	//##################### LOAD TEXTURES ###############################
 
 	Moon::SetTexture((char*)"res/moon.bmp");
-	sun.SetTexture((char*) "res/sun.bmp");
+	sun.SetTexture((char*) "res/earth.bmp");
 
 	planets[0] = Planet(0, 0, 0.6, 0.15f, 0.25f);
 	planets[0].SetTexture((char*) "res/mercury.bmp");
@@ -179,10 +222,10 @@ void init(void)
 	planets[1] = Planet(1, 0, 0.8, 0.13f, 0.23f);
 	planets[1].SetTexture((char*) "res/venus.bmp");
 
-	planets[2] = Planet(1, 0, 0.8, 0.11f, 0.21f);
-	planets[2].SetTexture((char*) "res/earth.bmp");
+	planets[2] = Planet(0, 0, 0.9, 0.11f, 0.21f);
+	planets[2].SetTexture((char*) "res/sun.bmp");
 	
-	planets[3] = Planet(2, 0, 0.75, 0.09f, 0.19f);
+	planets[3] = Planet(0, 0, 0.75, 0.09f, 0.19f);
 	planets[3].SetTexture((char*) "res/mars.bmp");
 	
 	planets[4] = Planet(5, 0, 1.0, 0.07f, 0.17f);
@@ -204,14 +247,18 @@ void init(void)
 							(char*)"res/right.bmp", (char*)"res/top.bmp");
 
 	//######################## ANIMATION ########################
+
 	timer = Reloj();
 	anim = ANIMATION::Init;
 	deltaT = 0.005;
 
-	setDate(2000, 11, 9, 0, 42);
+	reColocar();
+	//setDate(2000, 11, 9, 0, 42);
 	//setDate(2000, 9, 29);
 	//setDate(2000, 4, 26);
 	//setDate(2002, 6, 4, 13, 5);
+	//setDate(1999, 11, 3, 9, 5);
+	//setDate(1999, 12, 18, 7, 0);
 	//setDate(1934, 10, 22);
 
 	elip[0] = new Elliptica(planetAngle[2], hour, minutes);
@@ -226,6 +273,8 @@ void init(void)
 		float angulo = 1 + rand() % 360;
 		asteroids[i] = new Asteroid(asteroidRing, cos(angulo) * asteroidRing, sin(angulo) * asteroidRing);
 	}*/
+
+	Fog();
 
 	colocarEstrellas();
 }
