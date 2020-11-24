@@ -91,19 +91,6 @@ int hour = 12, minutes = 30;
 
 //###############
 
-void GetDate() {
-	std::string date = "", segment = "";
-	std::cout << "Get your date with the following format <Y-M-D>: 2000-12-26\n>>";
-	std::cin >> date;
-	char delimiter = '-';
-	std::vector<std::string> seglist;
-
-	/*while (getline(date, segment, delimiter)) {
-		
-	}*/
-
-}
-
 void Rotar() {
 
 }
@@ -172,6 +159,36 @@ void setDate(int _year, int _month, int _day, int _hours, int _minutes) {
 	reColocar();
 }
 
+void GetDate() {
+	int datex[5];
+
+	std::string date = "", segment = "", hourMinutes = "";
+	std::cout << "Get your date with the following format <Y-M-D>: 2000-12-26\n>>";
+	std::cin >> date;
+	std::cout << "\nNow please, write your hour and minutes of birthday with the following format <hr, min>: 0-42\n>>";
+	std::cin >> hourMinutes;
+	date += "-" + hourMinutes;
+
+	std::string delimiter = "-";
+	std::vector<std::string> seglist;
+	size_t pos = 0;
+	std::string token;
+
+	int i = 0;
+
+	while ((pos = date.find(delimiter)) != std::string::npos) {
+		token = date.substr(0, pos);
+		date.erase(0, pos + delimiter.length());
+		datex[i] = atoi(token.c_str());
+		i++;
+	}
+
+	datex[4] = atoi(date.c_str());
+	
+	std::cout << "Your date is: Year<" << datex[0] << "> Month <" << datex[1] << "> Day <" << datex[2] << "> Hour <" << datex[3] << "> Minutes <" << datex[4] << ">\n";
+	setDate(datex[0], datex[1], datex[2], datex[3], datex[4]);
+}
+
 void colocarEstrellas() {
 	estrellasPos = new float* [estrellas];
 	for (int i = 0; i < estrellas; i++) {
@@ -204,6 +221,7 @@ void dibujarEstrellas() {
 
 void init(void)
 {
+	GetDate();
 	//################## LIGHTS #####################
 	lightConfig = new Lights(0.0, 0.0, 0.0, 0.901, 0.513, 0.078);
 
